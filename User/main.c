@@ -18,18 +18,19 @@
 **************************************************************************************************/
 /* 创建任务函数任务句柄 */
 static TaskHandle_t AppTaskCreate_Handle;
-/* LED任务函数任务句柄 */
-static TaskHandle_t LED_Task_Handle;
+/* LED1任务函数任务句柄 */
+static TaskHandle_t LED1_Task_Handle;
+/* LED2任务函数任务句柄 */
+static TaskHandle_t LED2_Task_Handle;
 
 /**************************************************************************************************
 *									函数声明
 **************************************************************************************************/
 static void BSP_Init(void);
-static void LED_Task(void *parameter);
-
 
 static void AppTaskCreate(void *parameter);
-static void LED_Task(void *parameter);
+static void LED1_Task(void *parameter);
+static void LED2_Task(void *parameter);
 
 
 
@@ -50,7 +51,7 @@ int main(void)
 									   "AppTaskCreate任务",			//任务名称
 										128,				//任务堆栈大小
 										NULL,				//传递给任务函数的参数
-										3,					//任务优先级
+										2,					//任务优先级
 										AppTaskCreate_Handle);	
 	if(pdPASS == xReturn)//创建成功
 	{
@@ -88,21 +89,38 @@ static void AppTaskCreate(void *parameter)
 	BaseType_t xReturn = pdPASS;
 	taskENTER_CRITICAL(); //进入临界区
 	/* 创建LED——Task任务 */
-	xReturn = xTaskCreate(LED_Task,			//任务函数
-				   "LED任务",			//任务名称
-				   128,				//任务堆栈大小
-				   NULL,				//传递给任务函数的参数
-				   4,					//任务优先级
-				   LED_Task_Handle);
+	xReturn = xTaskCreate(LED1_Task,			//任务函数
+				   "LED任务",					//任务名称
+				   128,							//任务堆栈大小
+				   NULL,						//传递给任务函数的参数
+				   4,							//任务优先级
+				   LED1_Task_Handle);
 	
 	if(pdPASS == xReturn) /* LED任务创建成功 */
 	{
-		printf("任务创建成功\n");
+		printf("LED1任务创建成功\n");
 	}
 	else
 	{
-		printf("任务创建失败\n");
+		printf("LED1创建失败\n");
 	}
+	
+	xReturn = xTaskCreate(LED2_Task,			//任务函数
+				   "LED任务",					//任务名称
+				   128,							//任务堆栈大小
+				   NULL,						//传递给任务函数的参数
+				   3,							//任务优先级
+				   LED2_Task_Handle);
+	
+	if(pdPASS == xReturn) /* LED任务创建成功 */
+	{
+		printf("LED2任务创建成功\n");
+	}
+	else
+	{
+		printf("LED2创建失败\n");
+	}
+	
 	vTaskDelete(AppTaskCreate_Handle);	/* 删除AppTaskCreate任务 */
 	taskEXIT_CRITICAL();		//退出临界区
 }
@@ -113,16 +131,36 @@ static void AppTaskCreate(void *parameter)
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-static void LED_Task(void *parameter)
+static void LED1_Task(void *parameter)
+{
+	while(1)
+	{
+		LED1(1);
+		vTaskDelay(500);
+		printf("任务1 Running,led1_on\n");
+		
+		LED1(0);
+		vTaskDelay(500);
+		printf("任务1 Running,led1_off\n");
+	}
+}
+
+
+/********************************************************************************************
+*	描	述:LED2闪灯任务函数
+*	参	数:无
+*	返回值:无
+********************************************************************************************/
+static void LED2_Task(void *parameter)
 {
 	while(1)
 	{
 		LED2(1);
-		vTaskDelay(500);
-		printf("LED Task Running,led1_on\n");
+		vTaskDelay(100);
+		printf("任务2 Running,led2_on\n");
 		
 		LED2(0);
-		vTaskDelay(500);
-		printf("LED Task Running,led1_off\n");
+		vTaskDelay(100);
+		printf("任务2 Running,led2_off\n");
 	}
 }
