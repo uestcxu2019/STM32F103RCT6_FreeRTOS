@@ -8,7 +8,7 @@
 #define   LED1_GPIO_PIN      GPIO_Pin_2
 #define   LED2_GPIO_PIN      GPIO_Pin_3
 
-void Led_GPIO_Config(void);
+void Led_Init(void);
 void LED1(uint8_t flag);
 void LED2(uint8_t flag);
 

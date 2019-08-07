@@ -29,3 +29,15 @@
 .\objects\main.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\main.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\main.o: ..\BSP\bsp_led.h
+.\objects\main.o: ..\FreeRTOS\include\FreeRTOS.h
+.\objects\main.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\main.o: ..\User\FreeRTOSConfig.h
+.\objects\main.o: ..\BSP\bsp_uart.h
+.\objects\main.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: ..\FreeRTOS\include\projdefs.h
+.\objects\main.o: ..\FreeRTOS\include\portable.h
+.\objects\main.o: ..\FreeRTOS\include\deprecated_definitions.h
+.\objects\main.o: ..\FreeRTOS\port\RVDS\ARM_CM3\portmacro.h
+.\objects\main.o: ..\FreeRTOS\include\mpu_wrappers.h
+.\objects\main.o: ..\FreeRTOS\include\task.h
+.\objects\main.o: ..\FreeRTOS\include\list.h

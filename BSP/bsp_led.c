@@ -22,7 +22,7 @@
  *	参	数: 无
  *	返回值: 无
 **/
-void Led_GPIO_Config(void)
+void Led_Init(void)
 {
 	//GPIO_InitTypeDef为结构体类型
 	GPIO_InitTypeDef  GPIO_InitStruct;
@@ -54,7 +54,7 @@ void LED1(uint8_t flag)
 	if(flag == 0)
 	{
 		GPIO_SetBits(LED_GPIO_PORT, LED1_GPIO_PIN);
-	}
+	}	
 	else if(flag == 1)
 	{
 		GPIO_ResetBits(LED_GPIO_PORT, LED1_GPIO_PIN);
