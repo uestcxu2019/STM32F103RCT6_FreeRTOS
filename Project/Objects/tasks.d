@@ -1,9 +1,9 @@
 .\objects\tasks.o: ..\FreeRTOS\src\tasks.c
-.\objects\tasks.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
-.\objects\tasks.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\string.h
+.\objects\tasks.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\tasks.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\string.h
 .\objects\tasks.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\tasks.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\tasks.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\tasks.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\tasks.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\tasks.o: ..\User\FreeRTOSConfig.h
 .\objects\tasks.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\tasks.o: ..\Library\CMSIS\core_cm3.h
@@ -34,7 +34,7 @@
 .\objects\tasks.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\tasks.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\tasks.o: ..\BSP\bsp_uart.h
-.\objects\tasks.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\tasks.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\tasks.o: ..\FreeRTOS\include\projdefs.h
 .\objects\tasks.o: ..\FreeRTOS\include\portable.h
 .\objects\tasks.o: ..\FreeRTOS\include\deprecated_definitions.h

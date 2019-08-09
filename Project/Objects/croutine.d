@@ -1,7 +1,7 @@
 .\objects\croutine.o: ..\FreeRTOS\src\croutine.c
 .\objects\croutine.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\croutine.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\croutine.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\croutine.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\croutine.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\croutine.o: ..\User\FreeRTOSConfig.h
 .\objects\croutine.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\croutine.o: ..\Library\CMSIS\core_cm3.h
@@ -32,7 +32,7 @@
 .\objects\croutine.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\croutine.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\croutine.o: ..\BSP\bsp_uart.h
-.\objects\croutine.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\croutine.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\croutine.o: ..\FreeRTOS\include\projdefs.h
 .\objects\croutine.o: ..\FreeRTOS\include\portable.h
 .\objects\croutine.o: ..\FreeRTOS\include\deprecated_definitions.h

@@ -1,7 +1,7 @@
 .\objects\main.o: ..\User\main.c
 .\objects\main.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\main.o: ..\Library\CMSIS\core_cm3.h
-.\objects\main.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\main.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\main.o: ..\Library\CMSIS\system_stm32f10x.h
 .\objects\main.o: ..\User\stm32f10x_conf.h
 .\objects\main.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_adc.h
@@ -30,10 +30,10 @@
 .\objects\main.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\main.o: ..\BSP\bsp_led.h
 .\objects\main.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\main.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\main.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
 .\objects\main.o: ..\User\FreeRTOSConfig.h
 .\objects\main.o: ..\BSP\bsp_uart.h
-.\objects\main.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\main.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\main.o: ..\FreeRTOS\include\projdefs.h
 .\objects\main.o: ..\FreeRTOS\include\portable.h
 .\objects\main.o: ..\FreeRTOS\include\deprecated_definitions.h
@@ -41,3 +41,5 @@
 .\objects\main.o: ..\FreeRTOS\include\mpu_wrappers.h
 .\objects\main.o: ..\FreeRTOS\include\task.h
 .\objects\main.o: ..\FreeRTOS\include\list.h
+.\objects\main.o: ..\BSP\bsp_task.h
+.\objects\main.o: ..\BSP\bsp_key.h

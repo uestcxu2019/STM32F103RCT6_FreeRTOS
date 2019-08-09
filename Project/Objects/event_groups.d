@@ -1,8 +1,8 @@
 .\objects\event_groups.o: ..\FreeRTOS\src\event_groups.c
-.\objects\event_groups.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\event_groups.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\event_groups.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\event_groups.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\event_groups.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\event_groups.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\event_groups.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\event_groups.o: ..\User\FreeRTOSConfig.h
 .\objects\event_groups.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\event_groups.o: ..\Library\CMSIS\core_cm3.h
@@ -33,7 +33,7 @@
 .\objects\event_groups.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\event_groups.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\event_groups.o: ..\BSP\bsp_uart.h
-.\objects\event_groups.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\event_groups.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\event_groups.o: ..\FreeRTOS\include\projdefs.h
 .\objects\event_groups.o: ..\FreeRTOS\include\portable.h
 .\objects\event_groups.o: ..\FreeRTOS\include\deprecated_definitions.h

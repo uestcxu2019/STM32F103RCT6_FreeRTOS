@@ -727,6 +727,26 @@
               <FileType>5</FileType>
               <FilePath>..\BSP\bsp_uart.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_task.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_task.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_task.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_task.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_key.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_key.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_key.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_key.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

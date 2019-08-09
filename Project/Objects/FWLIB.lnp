@@ -35,6 +35,8 @@
 ".\objects\heap_4.o"
 ".\objects\bsp_led.o"
 ".\objects\bsp_uart.o"
+".\objects\bsp_task.o"
+".\objects\bsp_key.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --library_type=microlib --strict --scatter ".\Objects\FWLIB.sct"

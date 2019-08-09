@@ -1,8 +1,8 @@
 .\objects\heap_4.o: ..\FreeRTOS\port\MemMang\heap_4.c
-.\objects\heap_4.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\heap_4.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\heap_4.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\heap_4.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\heap_4.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\heap_4.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\heap_4.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\heap_4.o: ..\User\FreeRTOSConfig.h
 .\objects\heap_4.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\heap_4.o: ..\Library\CMSIS\core_cm3.h
@@ -33,7 +33,7 @@
 .\objects\heap_4.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\heap_4.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\heap_4.o: ..\BSP\bsp_uart.h
-.\objects\heap_4.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\heap_4.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\heap_4.o: ..\FreeRTOS\include\projdefs.h
 .\objects\heap_4.o: ..\FreeRTOS\include\portable.h
 .\objects\heap_4.o: ..\FreeRTOS\include\deprecated_definitions.h

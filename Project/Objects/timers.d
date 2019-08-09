@@ -1,8 +1,8 @@
 .\objects\timers.o: ..\FreeRTOS\src\timers.c
-.\objects\timers.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
+.\objects\timers.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdlib.h
 .\objects\timers.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\timers.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\timers.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\timers.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\timers.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\timers.o: ..\User\FreeRTOSConfig.h
 .\objects\timers.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\timers.o: ..\Library\CMSIS\core_cm3.h
@@ -33,7 +33,7 @@
 .\objects\timers.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\timers.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\timers.o: ..\BSP\bsp_uart.h
-.\objects\timers.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\timers.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\timers.o: ..\FreeRTOS\include\projdefs.h
 .\objects\timers.o: ..\FreeRTOS\include\portable.h
 .\objects\timers.o: ..\FreeRTOS\include\deprecated_definitions.h

@@ -2,36 +2,27 @@
 #include "bsp_led.h"
 #include "FreeRTOS.h"			  
 #include "task.h" 
-
+#include "bsp_task.h"
+#include "bsp_key.h"
 
 /**************************************************************************************************
 *		动态任务创建步骤
 *					1.创建任务函数
 *					2.创建任务创建APPTaskCreate函数
 *					3.在APPTaskCreate函数创建任务函数，创建成功后，删除APPTaskCreate函数
-*				需要在FreeRTOSConfig.h文件中开启configSUPPORT_DYNAMIC_ALLOCATION宏
+*				   需要在FreeRTOSConfig.h文件中开启configSUPPORT_DYNAMIC_ALLOCATION宏
 **************************************************************************************************/
 
 
 /**************************************************************************************************
 *									任务句柄
 **************************************************************************************************/
-/* 创建任务函数任务句柄 */
-static TaskHandle_t AppTaskCreate_Handle;
-/* LED1任务函数任务句柄 */
-static TaskHandle_t LED1_Task_Handle;
-/* LED2任务函数任务句柄 */
-static TaskHandle_t LED2_Task_Handle;
+extern TaskHandle_t AppTaskCreate_Handle;
 
 /**************************************************************************************************
 *									函数声明
 **************************************************************************************************/
 static void BSP_Init(void);
-
-static void AppTaskCreate(void *parameter);
-static void LED1_Task(void *parameter);
-static void LED2_Task(void *parameter);
-
 
 
 /**************************************************************************************************
@@ -42,22 +33,20 @@ static void LED2_Task(void *parameter);
 /**************************************************************************************************/
 int main(void)	
 {
-	BaseType_t xReturn = pdPASS;
 	//开发板硬件初始化
 	BSP_Init();
 	printf("初始化完成\n");
-	
-	xReturn = xTaskCreate(AppTaskCreate,			//任务函数
-									   "AppTaskCreate任务",			//任务名称
-										128,				//任务堆栈大小
-										NULL,				//传递给任务函数的参数
-										2,					//任务优先级
-										AppTaskCreate_Handle);	
-	if(pdPASS == xReturn)//创建成功
-	{
-		//启动任务调度器
-		vTaskStartScheduler();
-	}
+
+	//创建任务
+	 xTaskCreate(AppTaskCreate,
+				 "APPTaskCreate",
+				 126,
+				 NULL,
+				 1,
+				 &AppTaskCreate_Handle);
+		
+	//启动任务调度器
+	vTaskStartScheduler();
 	while(1);	//正常执行不会到这里来
 }
 
@@ -76,91 +65,7 @@ static void BSP_Init(void)
 	
 	/*串口初始化 */
 	UART_Init();
+	//按键初始化
+	KEY_Init();
 }
 
-
-/********************************************************************************************
-*	描	述:任务创建任务函数，用于创建任务
-*	参	数:无
-*	返回值:无
-********************************************************************************************/
-static void AppTaskCreate(void *parameter)
-{
-	BaseType_t xReturn = pdPASS;
-	taskENTER_CRITICAL(); //进入临界区
-	/* 创建LED——Task任务 */
-	xReturn = xTaskCreate(LED1_Task,			//任务函数
-				   "LED任务",					//任务名称
-				   128,							//任务堆栈大小
-				   NULL,						//传递给任务函数的参数
-				   4,							//任务优先级
-				   LED1_Task_Handle);
-	
-	if(pdPASS == xReturn) /* LED任务创建成功 */
-	{
-		printf("LED1任务创建成功\n");
-	}
-	else
-	{
-		printf("LED1创建失败\n");
-	}
-	
-	xReturn = xTaskCreate(LED2_Task,			//任务函数
-				   "LED任务",					//任务名称
-				   128,							//任务堆栈大小
-				   NULL,						//传递给任务函数的参数
-				   3,							//任务优先级
-				   LED2_Task_Handle);
-	
-	if(pdPASS == xReturn) /* LED任务创建成功 */
-	{
-		printf("LED2任务创建成功\n");
-	}
-	else
-	{
-		printf("LED2创建失败\n");
-	}
-	
-	vTaskDelete(AppTaskCreate_Handle);	/* 删除AppTaskCreate任务 */
-	taskEXIT_CRITICAL();		//退出临界区
-}
-
-
-/********************************************************************************************
-*	描	述:LED1闪灯任务函数
-*	参	数:无
-*	返回值:无
-********************************************************************************************/
-static void LED1_Task(void *parameter)
-{
-	while(1)
-	{
-		LED1(1);
-		vTaskDelay(500);
-		printf("任务1 Running,led1_on\n");
-		
-		LED1(0);
-		vTaskDelay(500);
-		printf("任务1 Running,led1_off\n");
-	}
-}
-
-
-/********************************************************************************************
-*	描	述:LED2闪灯任务函数
-*	参	数:无
-*	返回值:无
-********************************************************************************************/
-static void LED2_Task(void *parameter)
-{
-	while(1)
-	{
-		LED2(1);
-		vTaskDelay(100);
-		printf("任务2 Running,led2_on\n");
-		
-		LED2(0);
-		vTaskDelay(100);
-		printf("任务2 Running,led2_off\n");
-	}
-}

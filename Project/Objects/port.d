@@ -1,7 +1,7 @@
 .\objects\port.o: ..\FreeRTOS\port\RVDS\ARM_CM3\port.c
 .\objects\port.o: ..\FreeRTOS\include\FreeRTOS.h
-.\objects\port.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
-.\objects\port.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
+.\objects\port.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stddef.h
+.\objects\port.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdint.h
 .\objects\port.o: ..\User\FreeRTOSConfig.h
 .\objects\port.o: ..\Library\CMSIS\stm32f10x.h
 .\objects\port.o: ..\Library\CMSIS\core_cm3.h
@@ -32,7 +32,7 @@
 .\objects\port.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h
 .\objects\port.o: ..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h
 .\objects\port.o: ..\BSP\bsp_uart.h
-.\objects\port.o: D:\Program Files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
+.\objects\port.o: D:\program files\Keil\ARM\ARMCC\Bin\..\include\stdio.h
 .\objects\port.o: ..\FreeRTOS\include\projdefs.h
 .\objects\port.o: ..\FreeRTOS\include\portable.h
 .\objects\port.o: ..\FreeRTOS\include\deprecated_definitions.h
