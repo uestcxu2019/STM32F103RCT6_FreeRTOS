@@ -1130,8 +1130,8 @@ I (..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x559784E0)
 I (..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x559784E0)
 I (D:\Program Files\Keil\ARM\ARMCC\include\stdio.h)(0x5CEB79E2)
 F (..\BSP\bsp_uart.h)(0x5D4978CF)()
-F (..\BSP\bsp_task.c)(0x5D4D33D3)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\bsp_task.o --omf_browse .\objects\bsp_task.crf --depend .\objects\bsp_task.d)
-I (..\BSP\bsp_task.h)(0x5D4D314F)
+F (..\BSP\bsp_task.c)(0x5D4E9105)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\bsp_task.o --omf_browse .\objects\bsp_task.crf --depend .\objects\bsp_task.d)
+I (..\BSP\bsp_task.h)(0x5D4E8036)
 I (..\FreeRTOS\include\FreeRTOS.h)(0x573F3A16)
 I (D:\program files\Keil\ARM\ARMCC\include\stddef.h)(0x5CEB79E2)
 I (D:\program files\Keil\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
@@ -1172,9 +1172,10 @@ I (..\FreeRTOS\port\RVDS\ARM_CM3\portmacro.h)(0x573F3A17)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x573F3A16)
 I (..\FreeRTOS\include\task.h)(0x573F3A16)
 I (..\FreeRTOS\include\list.h)(0x573F3A16)
+I (..\FreeRTOS\include\queue.h)(0x573F3A16)
 I (..\BSP\bsp_led.h)(0x5D4A9F1A)
 I (..\BSP\bsp_key.h)(0x5D4D2CAF)
-F (..\BSP\bsp_task.h)(0x5D4D314F)()
+F (..\BSP\bsp_task.h)(0x5D4E8036)()
 F (..\BSP\bsp_key.c)(0x5D4D301B)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\bsp_key.o --omf_browse .\objects\bsp_key.crf --depend .\objects\bsp_key.d)
 I (..\BSP\bsp_key.h)(0x5D4D2CAF)
 I (..\Library\CMSIS\stm32f10x.h)(0x59FDDDBF)
@@ -1206,7 +1207,7 @@ I (..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_usart.h)(0x559784E0)
 I (..\Library\STM32F10x_StdPeriph_Driver\inc\stm32f10x_wwdg.h)(0x559784E0)
 I (..\Library\STM32F10x_StdPeriph_Driver\inc\misc.h)(0x559784E0)
 F (..\BSP\bsp_key.h)(0x5D4D2CAF)()
-F (..\User\main.c)(0x5D4D3349)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
+F (..\User\main.c)(0x5D4E859D)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\main.o --omf_browse .\objects\main.crf --depend .\objects\main.d)
 I (..\Library\CMSIS\stm32f10x.h)(0x59FDDDBF)
 I (..\Library\CMSIS\core_cm3.h)(0x559784E0)
 I (D:\program files\Keil\ARM\ARMCC\include\stdint.h)(0x5CEB79E2)
@@ -1248,7 +1249,8 @@ I (..\FreeRTOS\port\RVDS\ARM_CM3\portmacro.h)(0x573F3A17)
 I (..\FreeRTOS\include\mpu_wrappers.h)(0x573F3A16)
 I (..\FreeRTOS\include\task.h)(0x573F3A16)
 I (..\FreeRTOS\include\list.h)(0x573F3A16)
-I (..\BSP\bsp_task.h)(0x5D4D314F)
+I (..\BSP\bsp_task.h)(0x5D4E8036)
+I (..\FreeRTOS\include\queue.h)(0x573F3A16)
 I (..\BSP\bsp_key.h)(0x5D4D2CAF)
 F (..\User\stm32f10x_conf.h)(0x5D497850)()
 F (..\User\stm32f10x_it.c)(0x5D4A9CFC)(-c --cpu Cortex-M3 -D__MICROLIB -g -O0 --apcs=interwork --split_sections -I ..\User -I ..\Library\CMSIS -I ..\Library\STM32F10x_StdPeriph_Driver\inc -I ..\..\FreeRTOS -I ..\FreeRTOS\port\RVDS\ARM_CM3 -I ..\FreeRTOS\include -I ..\BSP-I.\RTE\_FW-LED-I"D:\program files\Keil\Keil\STM32F1xx_DFP\2.3.0\Device\Include"-I"D:\program files\Keil\ARM\CMSIS\Include"-D__UVISION_VERSION="528" -DSTM32F10X_HD -DUSE_STDPERIPH_DRIVER -DSTM32F10X_HD-o .\objects\stm32f10x_it.o --omf_browse .\objects\stm32f10x_it.crf --depend .\objects\stm32f10x_it.d)
@@ -1295,4 +1297,4 @@ I (..\FreeRTOS\include\task.h)(0x573F3A16)
 I (..\FreeRTOS\include\list.h)(0x573F3A16)
 F (..\User\stm32f10x_it.h)(0x559784D6)()
 F (..\User\FreeRTOSConfig.h)(0x5D4D141E)()
-F (..\Doc\程序说明.txt)(0x5D4ACD64)()
+F (..\Doc\程序说明.txt)(0x5D4E9103)()

@@ -42,4 +42,5 @@
 .\objects\main.o: ..\FreeRTOS\include\task.h
 .\objects\main.o: ..\FreeRTOS\include\list.h
 .\objects\main.o: ..\BSP\bsp_task.h
+.\objects\main.o: ..\FreeRTOS\include\queue.h
 .\objects\main.o: ..\BSP\bsp_key.h

@@ -38,12 +38,7 @@ int main(void)
 	printf("初始化完成\n");
 
 	//创建任务
-	 xTaskCreate(AppTaskCreate,
-				 "APPTaskCreate",
-				 126,
-				 NULL,
-				 1,
-				 &AppTaskCreate_Handle);
+	 xTaskCreate(AppTaskCreate,"APPTaskCreate",512,NULL,1,&AppTaskCreate_Handle);
 		
 	//启动任务调度器
 	vTaskStartScheduler();

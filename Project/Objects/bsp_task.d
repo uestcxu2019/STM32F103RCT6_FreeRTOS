@@ -41,5 +41,6 @@
 .\objects\bsp_task.o: ..\FreeRTOS\include\mpu_wrappers.h
 .\objects\bsp_task.o: ..\FreeRTOS\include\task.h
 .\objects\bsp_task.o: ..\FreeRTOS\include\list.h
+.\objects\bsp_task.o: ..\FreeRTOS\include\queue.h
 .\objects\bsp_task.o: ..\BSP\bsp_led.h
 .\objects\bsp_task.o: ..\BSP\bsp_key.h
