@@ -7,6 +7,7 @@
 #include "bsp_uart.h"
 #include "bsp_led.h"
 #include "bsp_key.h"
+#include "semphr.h"
 
 
 void AppTaskCreate(void *parameter);
@@ -15,6 +16,8 @@ void LED2_Task(void *parameter);
 void KEY_Task(void *parameter);
 void KEY_SendTask(void *parameter);
 void Queue_ReceiveTask(void *parameter);
+
+void xSemaphore_ReceiveTask(void *parameter);
 
 
 

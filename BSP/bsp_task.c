@@ -10,21 +10,23 @@
 /**************************************************************************************************
 *									变量定义
 **************************************************************************************************/
-#define Queue_Length    4		//队列的长度
+#define Queue_Length    	4		//队列的长度
 #define Queue_ItemSize		4		//队列中每个消息的大小(字节)
 
 
 /**************************************************************************************************
 *									任务句柄
 **************************************************************************************************/
-TaskHandle_t AppTaskCreate_Handle = NULL;
-TaskHandle_t LED1_Task_Handle = NULL;
-TaskHandle_t LED2_Task_Handle = NULL;
+TaskHandle_t AppTaskCreate_Handle = NULL;		//创建任务任务句柄
+TaskHandle_t LED1_Task_Handle = NULL;			//LED1任务句柄
+TaskHandle_t LED2_Task_Handle = NULL;			//LED2任务句柄
 
-TaskHandle_t KEY_SendTask_Handle = NULL;
-TaskHandle_t Queue_ReceiveTask_Handle = NULL;
+TaskHandle_t KEY_SendTask_Handle = NULL;		//按键发送任务句柄
+TaskHandle_t Queue_ReceiveTask_Handle = NULL;	//队列任务句柄
 
-QueueHandle_t  Queue_Handle = NULL;
+QueueHandle_t  Queue_Handle = NULL;				//队列句柄
+
+SemaphoreHandle_t	Semaphore_Handle = NULL;	//二值信号量句柄
 
 /********************************************************************************************
 *	描	述:任务创建任务函数
@@ -36,14 +38,26 @@ void AppTaskCreate(void *parameter)
 	BaseType_t xReturn = 3;
 	taskENTER_CRITICAL();	//进入临界区
 	
-	//创建消息队列
+/*	//创建消息队列
 	Queue_Handle = xQueueCreate(Queue_Length,Queue_ItemSize);
 	if(NULL != Queue_Handle)
 	{
 		printf("消息队列创建成功\n");
 	}
+*/	
+	
+	//创建二值信号量
+	Semaphore_Handle = xSemaphoreCreateBinary();
+	if(NULL != Semaphore_Handle)
+	{
+		printf("二值信号量创建成功\n");
+	}
+	else
+	{
+		printf("二值信号量创建失败\n");
+	}
 		
-	//创建按键发送消息任务
+/*	//创建按键发送消息任务
 	xReturn = xTaskCreate(KEY_SendTask,"KEY_SendTask",126,NULL,5,&KEY_SendTask_Handle);
 	if(pdPASS == xReturn)
 	{
@@ -55,7 +69,20 @@ void AppTaskCreate(void *parameter)
 	{
 		printf("Queue_ReceiveTask任务创建成功\n");
 	}
+*/	
+	//创建按键释放二值信号量任务
+	xReturn = xTaskCreate(KEY_Task,"KEY_Task",126,NULL,3,NULL);
+	if(pdPASS == xReturn)
+	{
+		printf("KEY_Task任务创建成功\n");
+	}
 	
+	//创建二值信号量获取任务
+	xReturn = xTaskCreate(xSemaphore_ReceiveTask,"xSemaphore_ReceiveTask",126,NULL,2,NULL);
+	if(pdPASS == xReturn)
+	{
+		printf("xSemaphore_ReceiveTask任务创建成功\n");
+	}
 	vTaskDelete(AppTaskCreate_Handle);
 	taskEXIT_CRITICAL();	//退出临界区
 }
@@ -117,21 +144,43 @@ void LED2_Task(void *parameter)
 ********************************************************************************************/
 void KEY_Task(void *parameter)
 {	
+	UBaseType_t xReturn = pdPASS;
 	while(1)
 	{
 		if(KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_ON)
 		{
-			printf("LED1任务挂起\n");
+		/*	printf("LED1任务挂起\n");
 			vTaskSuspend(LED1_Task_Handle);	//挂起LED1
 			printf("LED1任务挂起成功\n");
+		*/
+		//释放二值信号量	
+			xReturn = xSemaphoreGive(Semaphore_Handle);
+			if(pdPASS == xReturn)
+			{
+				printf("二值信号量释放成功\r\n");
+			}
+			else
+			{
+				printf("二值信号量释放失败\r\n");
+			}
 		}
 		if(KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == KEY_ON)
 		{
-			printf("LED1任务恢复\n");
+		/*	printf("LED1任务恢复\n");
 			vTaskResume(LED1_Task_Handle);
 			printf("LED1任务恢复成功\n");
+		*/
+			xReturn = xSemaphoreGive(Semaphore_Handle);
+			if(pdPASS == xReturn)
+			{
+				printf("二值信号量释放成功\r\n");
+			}
+			else
+			{
+				printf("二值信号量释放失败\r\n");
+			}
 		}
-		vTaskDelay(500);
+		vTaskDelay(50);
 	}
 }
 
@@ -175,7 +224,7 @@ void KEY_SendTask(void *parameter)
 
 
 /********************************************************************************************
-*	描	述:按键发送消息队列任务函数
+*	描	述:队列接收任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
@@ -190,6 +239,30 @@ void Queue_ReceiveTask(void *parameter)
 		{
 			printf("接收消息成功\n");
 			printf("接收到的数据是:%d\n",rece_data);
+		}
+		vTaskDelay(20);
+	}
+}
+
+
+/********************************************************************************************
+*	描	述:二值信号量接收任务函数
+*	参	数:无
+*	返回值:无
+********************************************************************************************/
+void xSemaphore_ReceiveTask(void *parameter)
+{
+	BaseType_t xReturn = pdPASS;
+	while(1)
+	{
+		xReturn = xSemaphoreTake(Semaphore_Handle,portMAX_DELAY);
+		if(pdPASS == xReturn)
+		{
+			printf("接收二值信号量成功\n");
+		}
+		else
+		{
+			printf("接收二值信号量失败\n");
 		}
 		vTaskDelay(20);
 	}
