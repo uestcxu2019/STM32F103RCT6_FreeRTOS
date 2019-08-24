@@ -11,13 +11,9 @@
 
 
 void AppTaskCreate(void *parameter);
-void LED1_Task(void *parameter);
-void LED2_Task(void *parameter);
-void KEY_Task(void *parameter);
-void KEY_SendTask(void *parameter);
-void Queue_ReceiveTask(void *parameter);
 
-void xSemaphore_ReceiveTask(void *parameter);
+void KEY1_Task(void *parameter);
+void KEY2_Task(void *parameter);
 
 
 

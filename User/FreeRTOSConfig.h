@@ -96,7 +96,7 @@
 #define configUSE_PREEMPTION					  1
 
 //1使能时间片调度(默认式使能的)
-#define configUSE_TIME_SLICING					1		
+#define configUSE_TIME_SLICING					  1		
 
 /* 某些运行FreeRTOS的硬件有两种方法选择下一个要执行的任务：
  * 通用方法和特定于硬件的方法（以下简称“特殊方法”）。
@@ -150,39 +150,39 @@
 #define configMAX_TASK_NAME_LEN					(16)
 
  //系统节拍计数器变量数据类型，1表示为16位无符号整形，0表示为32位无符号整形
-#define configUSE_16_BIT_TICKS					0                      
+#define configUSE_16_BIT_TICKS						0                      
 
 //空闲任务放弃CPU使用权给其他同优先级的用户任务
-#define configIDLE_SHOULD_YIELD					1           
+#define configIDLE_SHOULD_YIELD						1           
 
 //启用队列
-#define configUSE_QUEUE_SETS					  0    
+#define configUSE_QUEUE_SETS					  	0    
 
 //开启任务通知功能，默认开启
-#define configUSE_TASK_NOTIFICATIONS    1   
+#define configUSE_TASK_NOTIFICATIONS    			1   
 
 //使用互斥信号量
 #define configUSE_MUTEXES						    0    
 
 //使用递归互斥信号量                                            
-#define configUSE_RECURSIVE_MUTEXES			0   
+#define configUSE_RECURSIVE_MUTEXES					0   
 
 //为1时使用计数信号量
-#define configUSE_COUNTING_SEMAPHORES		0
+#define configUSE_COUNTING_SEMAPHORES				1
 
 /* 设置可以注册的信号量和消息队列个数 */
-#define configQUEUE_REGISTRY_SIZE				10                                 
+#define configQUEUE_REGISTRY_SIZE					10                                 
                                                                        
-#define configUSE_APPLICATION_TASK_TAG		  0                       
+#define configUSE_APPLICATION_TASK_TAG		  		0                       
                       
 
 /*****************************************************************
               FreeRTOS与内存申请有关配置选项                                               
 *****************************************************************/
 //支持动态内存申请
-#define configSUPPORT_DYNAMIC_ALLOCATION        1    
+#define configSUPPORT_DYNAMIC_ALLOCATION        	1    
 //支持静态内存
-#define configSUPPORT_STATIC_ALLOCATION			0					
+#define configSUPPORT_STATIC_ALLOCATION				0					
 //系统所有总的堆大小
 #define configTOTAL_HEAP_SIZE					((size_t)(36*1024))    
 
@@ -228,24 +228,24 @@
           FreeRTOS与运行时间和任务状态收集有关的配置选项   
 **********************************************************************/
 //启用运行时间统计功能
-#define configGENERATE_RUN_TIME_STATS	        0             
+#define configGENERATE_RUN_TIME_STATS	        	0             
  //启用可视化跟踪调试
-#define configUSE_TRACE_FACILITY				      0    
+#define configUSE_TRACE_FACILITY				    0    
 /* 与宏configUSE_TRACE_FACILITY同时为1时会编译下面3个函数
  * prvWriteNameToBuffer()
  * vTaskList(),
  * vTaskGetRunTimeStats()
 */
-#define configUSE_STATS_FORMATTING_FUNCTIONS	1                       
+#define configUSE_STATS_FORMATTING_FUNCTIONS		1                       
                                                                         
                                                                         
 /********************************************************************
                 FreeRTOS与协程有关的配置选项                                                
 *********************************************************************/
 //启用协程，启用协程以后必须添加文件croutine.c
-#define configUSE_CO_ROUTINES 			          0                 
+#define configUSE_CO_ROUTINES 			          	0                 
 //协程的有效优先级数目
-#define configMAX_CO_ROUTINE_PRIORITIES       ( 2 )                   
+#define configMAX_CO_ROUTINE_PRIORITIES       		( 2 )                   
 
 
 /***********************************************************************
