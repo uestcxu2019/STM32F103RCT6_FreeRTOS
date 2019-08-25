@@ -3,18 +3,16 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							计数信号量实验(模拟停车场工作运行)
-*							KEY1用于获取信号量，KEY2用于释放信号量
+*							互斥信号量实验(优先级翻转)
+*							创建三个任务，高、中、低优先级
 *
-*							获取:使用资源
-*							释放:放弃使用资源
-*							在计数信号量创建函数xSemaphoreCreateCounting(5,3)中
-*							其中5表示总共资源数量，3表示当前可用资源数量
-*							模拟停车场：5表示总共有5个停车位，3表示当前有3个停车位可用
-*							获取一个即表示使用一个停车位
-*							释放一个即表示车已开走，停车位已空出来了。
+*
+*							互斥信号量是一个拥有优先级继承的二值信号量，适用于互斥访问应用中
+*							互斥信号量相当于一个钥匙，当任务需要使用资源时必须获得钥匙，使用完后需要归还
+*							(相关概念：优先级继承，优先级翻转)
 **************************************************************************************************/
 
+//			优先级:数字越大，优先级越高
 
 /**************************************************************************************************
 *		   当多个任务具有相同的部分时，可以通过传入参数改变,从而不用创建多个任务
@@ -33,7 +31,7 @@
 **************************************************************************************************/
 TaskHandle_t AppTaskCreate_Handle = NULL;		//创建任务任务句柄
 
-SemaphoreHandle_t CountSem_Handle =NULL;		//信号量句柄
+SemaphoreHandle_t MutexSem_Handle =NULL;		//信号量句柄
 
 
 
@@ -47,82 +45,99 @@ void AppTaskCreate(void *parameter)
 	BaseType_t xReturn = pdPASS;
 	taskENTER_CRITICAL();	//进入临界区
 		
-	//创建计数信号量(需要打开configUSE_COUNTING_SEMAPHORES宏)
-	CountSem_Handle = xSemaphoreCreateCounting(5,3);		//其中5表示总共资源数量，3表示当前可用资源数量
-	if(NULL != CountSem_Handle)
+	//创建互斥信号量(需要打开configUSE_MUTEXES宏)
+	MutexSem_Handle = xSemaphoreCreateMutex();		
+	if(NULL != MutexSem_Handle)
 	{
-		printf("计数信号量创建成功\n");
+		printf("互斥信号量创建成功\n");
 	}
-			
-	//创建按键释放二值信号量任务
-	xReturn = xTaskCreate(KEY1_Task,"KEY1_Task",126,NULL,3,NULL);
+//	xSemaphoreGive(MutexSem_Handle);	//释放互斥信号量
+	
+	//创建低优先级任务
+	xReturn = xTaskCreate(LowPriority_Task,"LowPriority_Task",126,NULL,2,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("KEY1_Task任务创建成功\n");
+		printf("LowPriority_Task任务创建成功\n");
 	}
 	
-	//创建二值信号量获取任务
-	xReturn = xTaskCreate(KEY2_Task,"KEY2_Task",126,NULL,2,NULL);
+	//创建创建低优先级任务
+	xReturn = xTaskCreate(MidPriority_Task,"MidPriority_Task",126,NULL,3,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("KEY2_Task任务创建成功\n");
+		printf("MidPriority_Task任务创建成功\n");
 	}
+	
+	//创建创建高优先级任务
+	xReturn = xTaskCreate(HighPriority_Task,"HighPriority_Task",126,NULL,4,NULL);
+	if(pdPASS == xReturn)
+	{
+		printf("HighPriority_Task任务创建成功\n");
+	}
+	
 	vTaskDelete(AppTaskCreate_Handle);
 	taskEXIT_CRITICAL();	//退出临界区
 }
 
 
 /********************************************************************************************
-*	描	述:按键1扫描任务函数，用于获取信号量
+*	描	述:低优先级任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void KEY1_Task(void *parameter)
+void LowPriority_Task(void *parameter)
 {	
+	uint32_t i;
 	UBaseType_t xReturn = pdPASS;
 	while(1)
 	{
-		if(KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN) == KEY_ON)
-		{
-			//KE1按下，获取一个计数信号量	
-			xReturn = xSemaphoreTake(CountSem_Handle,0);
-			if(pdPASS == xReturn)
+		printf("LowPriority_Task获取信号量\n");
+		xReturn = xSemaphoreTake(MutexSem_Handle,portMAX_DELAY);
+		if(pdPASS == xReturn)
+			printf("LowPriority_Task运行中\n");
+			for(i = 0;i< 2000000;i++)		//暂未理解
 			{
-				printf("KEY被按下，成功获取到一个标志位\r\n");
+				taskYIELD();
 			}
-			else
-			{
-				printf("KEY1按下，但标志位已满\r\n");
-			}
-		}
-		vTaskDelay(50);
+		printf("LowPriority_Task释放信号量\n");
+			xSemaphoreGive(MutexSem_Handle);
+		vTaskDelay(500);
 	}
 }
 
 
 /********************************************************************************************
-*	描	述:按键2扫描任务函数，用于释放信号量
+*	描	述:中优先级任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void KEY2_Task(void *parameter)
+void MidPriority_Task(void *parameter)
+{	
+//	UBaseType_t xReturn = pdPASS;
+	while(1)
+	{
+		printf("MidPriority_Task运行中\n");
+		vTaskDelay(500);
+	}
+}
+
+
+/********************************************************************************************
+*	描	述:高优先级任务函数
+*	参	数:无
+*	返回值:无
+********************************************************************************************/
+void HighPriority_Task(void *parameter)
 {	
 	UBaseType_t xReturn = pdPASS;
 	while(1)
 	{
-		if(KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN) == KEY_ON)
-		{
-			//KE2按下，释放一个计数信号量	
-			xReturn = xSemaphoreGive(CountSem_Handle);
-			if(pdPASS == xReturn)
-			{
-				printf("KEY2被按下，成功释放一个标志位\r\n");
-			}
-			else
-			{
-				printf("KEY2按下，但无标志位可释放\r\n");
-			}
-		}
-		vTaskDelay(50);
+		printf("HighPriority_Task获取信号量\n");
+		xReturn = xSemaphoreTake(MutexSem_Handle,portMAX_DELAY);
+		if(pdPASS == xReturn)
+			printf("HighPriority_Task运行中\n");
+			taskYIELD();
+		printf("HighPriority_Task释放信号量\n");
+			xSemaphoreGive(MutexSem_Handle);
+		vTaskDelay(500);
 	}
 }

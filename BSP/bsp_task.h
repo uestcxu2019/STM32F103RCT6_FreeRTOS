@@ -12,9 +12,9 @@
 
 void AppTaskCreate(void *parameter);
 
-void KEY1_Task(void *parameter);
-void KEY2_Task(void *parameter);
-
+void LowPriority_Task(void *parameter);
+void MidPriority_Task(void *parameter);
+void HighPriority_Task(void *parameter);
 
 
 

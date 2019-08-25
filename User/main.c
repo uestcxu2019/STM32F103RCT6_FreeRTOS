@@ -10,7 +10,7 @@
 *					1.创建任务函数
 *					2.创建任务创建APPTaskCreate函数
 *					3.在APPTaskCreate函数创建任务函数，创建成功后，删除APPTaskCreate函数
-*				   需要在FreeRTOSConfig.h文件中开启configSUPPORT_DYNAMIC_ALLOCATION宏
+*				      需要在FreeRTOSConfig.h文件中开启configSUPPORT_DYNAMIC_ALLOCATION宏
 **************************************************************************************************/
 
 
