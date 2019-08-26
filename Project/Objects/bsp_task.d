@@ -45,3 +45,5 @@
 .\objects\bsp_task.o: ..\BSP\bsp_led.h
 .\objects\bsp_task.o: ..\BSP\bsp_key.h
 .\objects\bsp_task.o: ..\FreeRTOS\include\semphr.h
+.\objects\bsp_task.o: ..\FreeRTOS\include\event_groups.h
+.\objects\bsp_task.o: ..\FreeRTOS\include\timers.h

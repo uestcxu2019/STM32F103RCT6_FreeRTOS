@@ -8,14 +8,14 @@
 #include "bsp_led.h"
 #include "bsp_key.h"
 #include "semphr.h"
+#include "event_groups.h"
 
 
 void AppTaskCreate(void *parameter);
 
-void LowPriority_Task(void *parameter);
-void MidPriority_Task(void *parameter);
-void HighPriority_Task(void *parameter);
-
+void KEY_Task(void *parameter);
+void Event_Task(void *parameter);
+void EventAll_task(void *parameter);
 
 
 

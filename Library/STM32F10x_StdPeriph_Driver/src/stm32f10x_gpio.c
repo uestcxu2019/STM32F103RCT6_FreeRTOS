@@ -380,6 +380,22 @@ void GPIO_ResetBits(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
   GPIOx->BRR = GPIO_Pin;
 }
 
+
+/**
+  * @brief  Toggle the selected data port bits.
+  * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.
+  * @param  GPIO_Pin: specifies the port bits to be written.
+  *   This parameter can be any combination of GPIO_Pin_x where x can be (0..15).
+  * @retval None
+  */
+void GPIO_TogglePin(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin)
+{
+  /* Check the parameters */
+  assert_param(IS_GPIO_PIN(GPIO_Pin));
+
+  GPIOx->ODR ^= GPIO_Pin;
+}
+
 /**
   * @brief  Sets or clears the selected data port bit.
   * @param  GPIOx: where x can be (A..G) to select the GPIO peripheral.

@@ -3,13 +3,14 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							互斥信号量实验(优先级翻转)
-*							创建三个任务，高、中、低优先级
-*
-*
-*							互斥信号量是一个拥有优先级继承的二值信号量，适用于互斥访问应用中
-*							互斥信号量相当于一个钥匙，当任务需要使用资源时必须获得钥匙，使用完后需要归还
-*							(相关概念：优先级继承，优先级翻转)
+*							 事件(组)的学习
+*							 创建3个任务：按键任务，检测到标志位任务，以及检测到所有标志位任务
+*							 现象:按键1或按键2按下，LED1 toggle，同时串口打印数据，当按键1和按键2同时按下
+*							 LED2 toggle，同时串口打印数据
+*							 事件用于单个与多个或多个与多个任务的同步，事件用作标志位
+*					相关概念：1.事件位：用于表明某个事件是否发生，用作事件标志
+*							  2.事件组: 事件组就是一组事件位，事件组中的事件位通过位编号来访问
+*								对于stm32来说，一个事件组最多可以存储24个事件位。
 **************************************************************************************************/
 
 //			优先级:数字越大，优先级越高
@@ -31,7 +32,7 @@
 **************************************************************************************************/
 TaskHandle_t AppTaskCreate_Handle = NULL;		//创建任务任务句柄
 
-SemaphoreHandle_t MutexSem_Handle =NULL;		//信号量句柄
+EventGroupHandle_t Event_Handle =NULL;			//事件组量句柄
 
 
 
@@ -45,35 +46,32 @@ void AppTaskCreate(void *parameter)
 	BaseType_t xReturn = pdPASS;
 	taskENTER_CRITICAL();	//进入临界区
 		
-	//创建互斥信号量(需要打开configUSE_MUTEXES宏)
-	MutexSem_Handle = xSemaphoreCreateMutex();		
-	if(NULL != MutexSem_Handle)
+	//创建事件组
+	Event_Handle = xEventGroupCreate();		
+	if(NULL != Event_Handle)
 	{
-		printf("互斥信号量创建成功\n");
-	}
-//	xSemaphoreGive(MutexSem_Handle);	//释放互斥信号量
-	
-	//创建低优先级任务
-	xReturn = xTaskCreate(LowPriority_Task,"LowPriority_Task",126,NULL,2,NULL);
+		printf("事件组创建成功\n\n");
+	}	
+	//创建任务
+	xReturn = xTaskCreate(KEY_Task,"KEY_Task",126,NULL,4,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("LowPriority_Task任务创建成功\n");
+		printf("KEY_Task任务创建成功\n");
 	}
 	
-	//创建创建低优先级任务
-	xReturn = xTaskCreate(MidPriority_Task,"MidPriority_Task",126,NULL,3,NULL);
+	//创建任务
+	xReturn = xTaskCreate(Event_Task,"Event_Task",126,NULL,3,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("MidPriority_Task任务创建成功\n");
+		printf("Event_Task任务创建成功\n");
 	}
-	
-	//创建创建高优先级任务
-	xReturn = xTaskCreate(HighPriority_Task,"HighPriority_Task",126,NULL,4,NULL);
+
+	//创建任务
+	xReturn = xTaskCreate(EventAll_task,"EventAll_task",126,NULL,2,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("HighPriority_Task任务创建成功\n");
+		printf("EventAll_task任务创建成功\n\n");
 	}
-	
 	vTaskDelete(AppTaskCreate_Handle);
 	taskEXIT_CRITICAL();	//退出临界区
 }
@@ -84,60 +82,76 @@ void AppTaskCreate(void *parameter)
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void LowPriority_Task(void *parameter)
+void KEY_Task(void *parameter)
 {	
-	uint32_t i;
-	UBaseType_t xReturn = pdPASS;
+	uint16_t keyValue;
 	while(1)
 	{
-		printf("LowPriority_Task获取信号量\n");
-		xReturn = xSemaphoreTake(MutexSem_Handle,portMAX_DELAY);
-		if(pdPASS == xReturn)
-			printf("LowPriority_Task运行中\n");
-			for(i = 0;i< 2000000;i++)		//暂未理解
+		if(Event_Handle != NULL)
+		{
+			keyValue = KEY_Scan(KEY1_GPIO_PORT, KEY1_GPIO_PIN);
+			if(KEY_ON == keyValue)
 			{
-				taskYIELD();
+				printf("按键1按下\n\n");
+				xEventGroupSetBits(Event_Handle,0x01);
 			}
-		printf("LowPriority_Task释放信号量\n");
-			xSemaphoreGive(MutexSem_Handle);
-		vTaskDelay(500);
+			
+			keyValue = KEY_Scan(KEY2_GPIO_PORT, KEY2_GPIO_PIN);
+			if(KEY_ON == keyValue)
+			{
+				printf("按键2按下\n\n");
+				xEventGroupSetBits(Event_Handle,0x02);
+			}
+		}
+		vTaskDelay(20);
 	}
 }
 
 
 /********************************************************************************************
-*	描	述:中优先级任务函数
+*	描	述:当多个标志位满足时才执行任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void MidPriority_Task(void *parameter)
+void EventAll_task(void *parameter)
 {	
-//	UBaseType_t xReturn = pdPASS;
+	EventBits_t value;
 	while(1)
 	{
-		printf("MidPriority_Task运行中\n");
-		vTaskDelay(500);
+		if(Event_Handle != NULL)
+		{
+			//当多个标志位都满足时才执行
+			value = xEventGroupWaitBits(Event_Handle,0x03, pdTRUE,pdTRUE,portMAX_DELAY);
+			printf("事件组标志位值为:%d\n",value);
+			LED1_Toggle();
+		}
+		vTaskDelay(20);
 	}
 }
 
 
 /********************************************************************************************
-*	描	述:高优先级任务函数
+*	描	述:一个或多个满足就可执行任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void HighPriority_Task(void *parameter)
-{	
-	UBaseType_t xReturn = pdPASS;
+void Event_Task(void *parameter)
+{
+	EventBits_t value;
 	while(1)
 	{
-		printf("HighPriority_Task获取信号量\n");
-		xReturn = xSemaphoreTake(MutexSem_Handle,portMAX_DELAY);
-		if(pdPASS == xReturn)
-			printf("HighPriority_Task运行中\n");
-			taskYIELD();
-		printf("HighPriority_Task释放信号量\n");
-			xSemaphoreGive(MutexSem_Handle);
-		vTaskDelay(500);
+		if(Event_Handle != NULL)
+		{
+			//只有有一个满足就执行
+			value = xEventGroupGetBits(Event_Handle);
+			if(value != 0x00)
+			{
+				printf("获取到标志位,值为:%d\n\n",value);
+				LED2_Toggle();
+				//清除标志位
+				xEventGroupClearBits(Event_Handle,0x03);
+			}
+		}
+		vTaskDelay(20);
 	}
 }

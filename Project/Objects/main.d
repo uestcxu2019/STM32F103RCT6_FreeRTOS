@@ -45,3 +45,5 @@
 .\objects\main.o: ..\FreeRTOS\include\queue.h
 .\objects\main.o: ..\BSP\bsp_key.h
 .\objects\main.o: ..\FreeRTOS\include\semphr.h
+.\objects\main.o: ..\FreeRTOS\include\event_groups.h
+.\objects\main.o: ..\FreeRTOS\include\timers.h

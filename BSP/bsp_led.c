@@ -79,3 +79,32 @@ void LED2(uint8_t flag)
 		GPIO_ResetBits(LED_GPIO_PORT, LED2_GPIO_PIN);
 	}	
 }
+
+
+/*
+ *	说	明: LED1闪灯
+ *	参	数: flag,值为下列之一:
+ *	    		 0: 低电平,LED熄灭
+ *				 1: 高电平,LED点亮
+ *	返回值: 无
+**/
+void LED1_Toggle(void)
+{
+	GPIO_TogglePin(LED_GPIO_PORT,LED1_GPIO_PIN);
+}
+
+
+
+/*
+ *	说	明: LED2闪灯
+ *	参	数: flag,值为下列之一:
+ *	    		 0: 低电平,LED熄灭
+ *				 1: 高电平,LED点亮
+ *	返回值: 无
+**/
+void LED2_Toggle(void)
+{
+	GPIO_TogglePin(LED_GPIO_PORT,LED2_GPIO_PIN);
+}
+
+

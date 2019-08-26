@@ -150,7 +150,7 @@
 #define configMAX_TASK_NAME_LEN					(16)
 
  //系统节拍计数器变量数据类型，1表示为16位无符号整形，0表示为32位无符号整形
-#define configUSE_16_BIT_TICKS						0                      
+#define configUSE_16_BIT_TICKS						1                      
 
 //空闲任务放弃CPU使用权给其他同优先级的用户任务
 #define configIDLE_SHOULD_YIELD						1           

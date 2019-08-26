@@ -16,6 +16,7 @@
 #define KEY_ON		1
 #define KEY_OFF		0
 
+
 void KEY_Init(void);
 uint16_t KEY_Scan(GPIO_TypeDef* GPIOx, uint16_t GPIO_Pin);
 
