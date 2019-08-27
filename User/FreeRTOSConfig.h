@@ -150,7 +150,7 @@
 #define configMAX_TASK_NAME_LEN					(16)
 
  //系统节拍计数器变量数据类型，1表示为16位无符号整形，0表示为32位无符号整形
-#define configUSE_16_BIT_TICKS						1                      
+#define configUSE_16_BIT_TICKS						0                      
 
 //空闲任务放弃CPU使用权给其他同优先级的用户任务
 #define configIDLE_SHOULD_YIELD						1           
@@ -252,7 +252,7 @@
                 FreeRTOS与软件定时器有关的配置选项      
 **********************************************************************/
  //启用软件定时器
-#define configUSE_TIMERS				            0                              
+#define configUSE_TIMERS				            1                              
 //软件定时器优先级
 #define configTIMER_TASK_PRIORITY		        (configMAX_PRIORITIES-1)        
 //软件定时器队列长度

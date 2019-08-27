@@ -9,14 +9,13 @@
 #include "bsp_key.h"
 #include "semphr.h"
 #include "event_groups.h"
+#include "timers.h"
 
 
 void AppTaskCreate(void *parameter);
 
-void KEY_Task(void *parameter);
-void Event_Task(void *parameter);
-void EventAll_task(void *parameter);
-
-
+void Period_CallBack(TimerHandle_t xTimer);
+void oneTime_CallBack(TimerHandle_t xTimer);
+void KEY_ControlTask(void *parameter);
 
 #endif  /* __BSP_TASK_H */

@@ -3,14 +3,16 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							 事件(组)的学习
-*							 创建3个任务：按键任务，检测到标志位任务，以及检测到所有标志位任务
-*							 现象:按键1或按键2按下，LED1 toggle，同时串口打印数据，当按键1和按键2同时按下
-*							 LED2 toggle，同时串口打印数据
-*							 事件用于单个与多个或多个与多个任务的同步，事件用作标志位
-*					相关概念：1.事件位：用于表明某个事件是否发生，用作事件标志
-*							  2.事件组: 事件组就是一组事件位，事件组中的事件位通过位编号来访问
-*								对于stm32来说，一个事件组最多可以存储24个事件位。
+*							 FreeRTOS软件定时器学习
+*							 创建两个定时器，一个是单次，一个是周期
+*							 使用按键1启动两个定时器，使用按键2关闭周期定时器
+*							 
+*							 
+*					注意点:1.软件定时器在被创建之后，当经过设定的时钟计数值后会触发用户定义的回调函数
+*							 回调函数相当于中断服务函数，应快进快出 ，并且回调函数中不能出现任何阻塞任务运行的API
+*						   2.软件定时器用于对定时精度要求不高的地方
+*						   3.软件定时器不属于FreeRTOS的内核功能，使用时需要打开宏configUSE_TIMERS
+*								
 **************************************************************************************************/
 
 //			优先级:数字越大，优先级越高
@@ -25,16 +27,16 @@
 /**************************************************************************************************
 *									变量定义
 **************************************************************************************************/
-
+uint16_t i = 1;
+uint16_t j = 1;
 
 /**************************************************************************************************
 *									任务句柄
 **************************************************************************************************/
 TaskHandle_t AppTaskCreate_Handle = NULL;		//创建任务任务句柄
 
-EventGroupHandle_t Event_Handle =NULL;			//事件组量句柄
-
-
+TimerHandle_t  periodTimer_Handle = NULL;			//周期定时器句柄
+TimerHandle_t  oneTimer_Handle = NULL;				//单次定时器句柄
 
 /********************************************************************************************
 *	描	述:任务创建任务函数
@@ -43,34 +45,28 @@ EventGroupHandle_t Event_Handle =NULL;			//事件组量句柄
 ********************************************************************************************/
 void AppTaskCreate(void *parameter)
 {
-	BaseType_t xReturn = pdPASS;
+	BaseType_t xReturn;
 	taskENTER_CRITICAL();	//进入临界区
-		
-	//创建事件组
-	Event_Handle = xEventGroupCreate();		
-	if(NULL != Event_Handle)
+	
+	//创建软件周期定时器
+	periodTimer_Handle = xTimerCreate("周期定时器",pdMS_TO_TICKS(1000),pdTRUE,(void *)1,Period_CallBack);		
+	if(NULL != periodTimer_Handle)
 	{
-		printf("事件组创建成功\n\n");
-	}	
-	//创建任务
-	xReturn = xTaskCreate(KEY_Task,"KEY_Task",126,NULL,4,NULL);
-	if(pdPASS == xReturn)
-	{
-		printf("KEY_Task任务创建成功\n");
+		printf("周期定时器创建成功\n\n");
 	}
 	
-	//创建任务
-	xReturn = xTaskCreate(Event_Task,"Event_Task",126,NULL,3,NULL);
-	if(pdPASS == xReturn)
+	//创建软件单次定时器
+	oneTimer_Handle = xTimerCreate("单次定时器",pdMS_TO_TICKS(800),pdFALSE,(void *)2,oneTime_CallBack);
+	if(NULL != oneTimer_Handle)
 	{
-		printf("Event_Task任务创建成功\n");
+		printf("单次定时器创建成功\n");
 	}
-
-	//创建任务
-	xReturn = xTaskCreate(EventAll_task,"EventAll_task",126,NULL,2,NULL);
+	
+	//创建按键任务
+	 xReturn = xTaskCreate(KEY_ControlTask,"KEY_ControlTask",126,NULL,2,NULL);
 	if(pdPASS == xReturn)
 	{
-		printf("EventAll_task任务创建成功\n\n");
+		printf("key1按键任务创建成功\n\n");
 	}
 	vTaskDelete(AppTaskCreate_Handle);
 	taskEXIT_CRITICAL();	//退出临界区
@@ -78,33 +74,14 @@ void AppTaskCreate(void *parameter)
 
 
 /********************************************************************************************
-*	描	述:低优先级任务函数
+*	描	述:周期定时器回调函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void KEY_Task(void *parameter)
-{	
-	uint16_t keyValue;
-	while(1)
-	{
-		if(Event_Handle != NULL)
-		{
-			keyValue = KEY_Scan(KEY1_GPIO_PORT, KEY1_GPIO_PIN);
-			if(KEY_ON == keyValue)
-			{
-				printf("按键1按下\n\n");
-				xEventGroupSetBits(Event_Handle,0x01);
-			}
-			
-			keyValue = KEY_Scan(KEY2_GPIO_PORT, KEY2_GPIO_PIN);
-			if(KEY_ON == keyValue)
-			{
-				printf("按键2按下\n\n");
-				xEventGroupSetBits(Event_Handle,0x02);
-			}
-		}
-		vTaskDelay(20);
-	}
+void Period_CallBack(TimerHandle_t xTimer)
+{
+	LED1_Toggle();
+	printf("进入周期定时回调函数%d次\n",i++);
 }
 
 
@@ -113,45 +90,38 @@ void KEY_Task(void *parameter)
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void EventAll_task(void *parameter)
-{	
-	EventBits_t value;
-	while(1)
-	{
-		if(Event_Handle != NULL)
-		{
-			//当多个标志位都满足时才执行
-			value = xEventGroupWaitBits(Event_Handle,0x03, pdTRUE,pdTRUE,portMAX_DELAY);
-			printf("事件组标志位值为:%d\n",value);
-			LED1_Toggle();
-		}
-		vTaskDelay(20);
-	}
+void oneTime_CallBack(TimerHandle_t xTimer)
+{
+	LED2_Toggle();
+	printf("进入单次定时回调函数%d次\n\n",j++);
 }
 
 
 /********************************************************************************************
-*	描	述:一个或多个满足就可执行任务函数
+*	描	述:按键控制软件定时器任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void Event_Task(void *parameter)
+void KEY_ControlTask(void *parameter)
 {
-	EventBits_t value;
 	while(1)
 	{
-		if(Event_Handle != NULL)
+		//key1按下开启定时器
+		if(KEY_ON == KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN))
 		{
-			//只有有一个满足就执行
-			value = xEventGroupGetBits(Event_Handle);
-			if(value != 0x00)
-			{
-				printf("获取到标志位,值为:%d\n\n",value);
-				LED2_Toggle();
-				//清除标志位
-				xEventGroupClearBits(Event_Handle,0x03);
-			}
+			printf("key1按下\n");
+			//启动周期定时器
+			xTimerStart(periodTimer_Handle,0);
+			//启动单次定时器
+			xTimerStart(oneTimer_Handle,0);
 		}
-		vTaskDelay(20);
+		//key2按下关闭定时器
+		if(KEY_ON == KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN))
+		{
+			printf("\n");
+			printf("key2按下\n");
+			xTimerStop(periodTimer_Handle,0);
+			printf("关闭周期定时器\n");
+		}
 	}
 }
