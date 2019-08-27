@@ -3,15 +3,16 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							 FreeRTOS软件定时器学习
-*							 创建两个定时器，一个是单次，一个是周期
-*							 使用按键1启动两个定时器，使用按键2关闭周期定时器
+*							 任务通知学习(模拟二值信号量实验,用于同步任务)
+*							 创建三个任务，一个用于发送通知(通过不同的按键向不同的接收任务发送通知)，另外两个用于接收通知
 *							 
 *							 
-*					注意点:1.软件定时器在被创建之后，当经过设定的时钟计数值后会触发用户定义的回调函数
-*							 回调函数相当于中断服务函数，应快进快出 ，并且回调函数中不能出现任何阻塞任务运行的API
-*						   2.软件定时器用于对定时精度要求不高的地方
-*						   3.软件定时器不属于FreeRTOS的内核功能，使用时需要打开宏configUSE_TIMERS
+*							 
+*					任务通知
+*							1.无需创建
+*						    2.任务/中断均能发送通知
+*						    3.只有任务可以等待通知，中断中不允许等待通知
+*							4.任务通知只能有一个接收任务
 *								
 **************************************************************************************************/
 
@@ -27,16 +28,16 @@
 /**************************************************************************************************
 *									变量定义
 **************************************************************************************************/
-uint16_t i = 1;
-uint16_t j = 1;
+
 
 /**************************************************************************************************
 *									任务句柄
 **************************************************************************************************/
 TaskHandle_t AppTaskCreate_Handle = NULL;		//创建任务任务句柄
 
-TimerHandle_t  periodTimer_Handle = NULL;			//周期定时器句柄
-TimerHandle_t  oneTimer_Handle = NULL;				//单次定时器句柄
+TaskHandle_t taskSend_Handle = NULL;			//创建任务任务句柄
+TaskHandle_t taskReceive1_Handle = NULL;		//创建任务任务句柄
+TaskHandle_t taskReceive2_Handle = NULL;		//创建任务任务句柄
 
 /********************************************************************************************
 *	描	述:任务创建任务函数
@@ -47,81 +48,88 @@ void AppTaskCreate(void *parameter)
 {
 	BaseType_t xReturn;
 	taskENTER_CRITICAL();	//进入临界区
-	
-	//创建软件周期定时器
-	periodTimer_Handle = xTimerCreate("周期定时器",pdMS_TO_TICKS(1000),pdTRUE,(void *)1,Period_CallBack);		
-	if(NULL != periodTimer_Handle)
-	{
-		printf("周期定时器创建成功\n\n");
-	}
-	
-	//创建软件单次定时器
-	oneTimer_Handle = xTimerCreate("单次定时器",pdMS_TO_TICKS(800),pdFALSE,(void *)2,oneTime_CallBack);
-	if(NULL != oneTimer_Handle)
-	{
-		printf("单次定时器创建成功\n");
-	}
-	
+			
 	//创建按键任务
-	 xReturn = xTaskCreate(KEY_ControlTask,"KEY_ControlTask",126,NULL,2,NULL);
+	 xReturn = xTaskCreate(taskSend,"taskSend",126,NULL,2,&taskSend_Handle);
 	if(pdPASS == xReturn)
 	{
-		printf("key1按键任务创建成功\n\n");
+		printf("taskSend创建成功\n");
+	}
+	
+	xReturn = xTaskCreate(taskReceive1,"taskReceive1",126,NULL,3,&taskReceive1_Handle);
+	if(pdPASS == xReturn)
+	{
+		printf("taskReceive1_Handle创建成功\n");
+	}
+	
+	xReturn = xTaskCreate(taskReceive2,"taskReceive2",126,NULL,4,&taskReceive2_Handle);
+	if(pdPASS == xReturn)
+	{
+		printf("taskReceive2_Handle创建成功\n\n");
 	}
 	vTaskDelete(AppTaskCreate_Handle);
 	taskEXIT_CRITICAL();	//退出临界区
 }
 
 
+
 /********************************************************************************************
-*	描	述:周期定时器回调函数
+*	描	述:任务通知发送任务函数
 *	参	数:无
 *	返回值:无
 ********************************************************************************************/
-void Period_CallBack(TimerHandle_t xTimer)
-{
-	LED1_Toggle();
-	printf("进入周期定时回调函数%d次\n",i++);
-}
-
-
-/********************************************************************************************
-*	描	述:当多个标志位满足时才执行任务函数
-*	参	数:无
-*	返回值:无
-********************************************************************************************/
-void oneTime_CallBack(TimerHandle_t xTimer)
-{
-	LED2_Toggle();
-	printf("进入单次定时回调函数%d次\n\n",j++);
-}
-
-
-/********************************************************************************************
-*	描	述:按键控制软件定时器任务函数
-*	参	数:无
-*	返回值:无
-********************************************************************************************/
-void KEY_ControlTask(void *parameter)
+void taskSend(void *parameter)
 {
 	while(1)
 	{
-		//key1按下开启定时器
 		if(KEY_ON == KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN))
 		{
-			printf("key1按下\n");
-			//启动周期定时器
-			xTimerStart(periodTimer_Handle,0);
-			//启动单次定时器
-			xTimerStart(oneTimer_Handle,0);
+			LED1_Toggle();
+			//发送任务通知给接收任务1
+			xTaskNotifyGive(taskReceive1_Handle);
+			printf("向接收任务1发送通知成功\n");
 		}
-		//key2按下关闭定时器
+		
 		if(KEY_ON == KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN))
 		{
-			printf("\n");
-			printf("key2按下\n");
-			xTimerStop(periodTimer_Handle,0);
-			printf("关闭周期定时器\n");
+			LED1_Toggle();
+			//发送任务通知给接收任务1
+			xTaskNotifyGive(taskReceive2_Handle);
+			printf("向接收任务2发送通知成功\n");
 		}
 	}
 }
+
+
+/********************************************************************************************
+*	描	述:任务通知接收任务函数1
+*	参	数:无
+*	返回值:无
+********************************************************************************************/
+void taskReceive1(void *parameter)
+{
+	while(1)
+	{
+		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+		printf("taskReceive1接收到任务通知\n");
+	}
+}
+
+
+/********************************************************************************************
+*	描	述:任务通知接收任务函数2
+*	参	数:无
+*	返回值:无
+********************************************************************************************/
+void taskReceive2(void *parameter)
+{
+	while(1)
+	{
+		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
+		printf("taskReceive2接收到任务通知\n");
+	}
+}
+
+
+
+

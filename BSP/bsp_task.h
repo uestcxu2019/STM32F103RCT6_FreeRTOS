@@ -14,8 +14,9 @@
 
 void AppTaskCreate(void *parameter);
 
-void Period_CallBack(TimerHandle_t xTimer);
-void oneTime_CallBack(TimerHandle_t xTimer);
-void KEY_ControlTask(void *parameter);
+void taskSend(void *parameter);
+void taskReceive1(void *parameter);
+void taskReceive2(void *parameter);
+
 
 #endif  /* __BSP_TASK_H */
