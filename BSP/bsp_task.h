@@ -15,8 +15,7 @@
 void AppTaskCreate(void *parameter);
 
 void taskSend(void *parameter);
-void taskReceive1(void *parameter);
-void taskReceive2(void *parameter);
+void taskReceive(void *parameter);
 
 
 #endif  /* __BSP_TASK_H */
