@@ -3,7 +3,7 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							 任务通知学习(模拟计数信号量)
+*							 任务通知学习(模拟事件组(标志位))
 *							 
 *							 
 *							 
@@ -55,10 +55,10 @@ void AppTaskCreate(void *parameter)
 		printf("taskSend创建成功\n");
 	}
 	
-	xReturn = xTaskCreate(taskReceive,"taskReceive1",126,NULL,3,&taskReceive_Handle);
+	xReturn = xTaskCreate(taskReceive,"taskReceive",126,NULL,3,&taskReceive_Handle);
 	if(pdPASS == xReturn)
 	{
-		printf("taskReceive1_Handle创建成功\n");
+		printf("taskReceive_Handle创建成功\n");
 	}
 	
 	vTaskDelete(AppTaskCreate_Handle);
@@ -76,14 +76,19 @@ void taskSend(void *parameter)
 {
 	while(1)
 	{
-		if(KEY_ON == KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN))
+		if(KEY_ON == KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN))
 		{
 			LED1_Toggle();
 			//发送任务通知给接收任务1
-			xTaskNotifyGive(taskReceive_Handle);
-			printf("key2按下，释放一个车位\n");
+			xTaskNotify(taskReceive_Handle,1,eSetBits);
 		}
 		
+		if(KEY_ON == KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN))
+		{
+			LED2_Toggle();
+			//发送任务通知给接收任务1
+			xTaskNotify(taskReceive_Handle,2,eSetBits);;
+		}
 		
 		vTaskDelay(20);
 	}
@@ -101,19 +106,15 @@ void taskReceive(void *parameter)
 	
 	while(1)
 	{
-//		printf("通知值是%d",Value_data -1);
-		if(KEY_ON == KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN))
+		LED1_Toggle();
+		xTaskNotifyWait(0x00,0xFF,&Value_data,portMAX_DELAY);
+		if(Value_data == 1)
 		{
-			LED1_Toggle();
-			Value_data = ulTaskNotifyTake(pdFALSE,0);	//设置为pdFALSE,相当于计数信号量，设置为pdTRUE相当于二值信号量
-			if(Value_data > 0)
-			{
-				printf("KEY1被按下,成功申请到停车位。当前车位为 %d \n", Value_data - 1);
-			}
-			else
-			{
-				printf("已经没有车位了，请按下key2释放车位\n");
-			}
+			printf("KEY1被按下\n");
+		}
+		if(Value_data == 2)
+		{
+			printf("KEY2被按下\n");
 		}
 		vTaskDelay(20);
 	}
