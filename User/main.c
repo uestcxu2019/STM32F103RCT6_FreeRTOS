@@ -36,7 +36,7 @@ int main(void)
 	//开发板硬件初始化
 	BSP_Init();
 	printf("初始化完成\n");
-
+	
 	//创建任务
 	 xTaskCreate(AppTaskCreate,"APPTaskCreate",512,NULL,1,&AppTaskCreate_Handle);
 		

@@ -3,8 +3,8 @@
 
 /**************************************************************************************************
 *					功能描述:
-*							 任务通知学习(模拟二值信号量实验,用于同步任务)
-*							 创建三个任务，一个用于发送通知(通过不同的按键向不同的接收任务发送通知)，另外两个用于接收通知
+*							 任务通知学习(模拟消息队列实验,用于向任务发送消息)
+*							 
 *							 
 *							 
 *							 
@@ -50,7 +50,7 @@ void AppTaskCreate(void *parameter)
 	taskENTER_CRITICAL();	//进入临界区
 			
 	//创建按键任务
-	 xReturn = xTaskCreate(taskSend,"taskSend",126,NULL,2,&taskSend_Handle);
+	 xReturn = xTaskCreate(taskSend,"taskSend",126,NULL,4,&taskSend_Handle);
 	if(pdPASS == xReturn)
 	{
 		printf("taskSend创建成功\n");
@@ -62,7 +62,7 @@ void AppTaskCreate(void *parameter)
 		printf("taskReceive1_Handle创建成功\n");
 	}
 	
-	xReturn = xTaskCreate(taskReceive2,"taskReceive2",126,NULL,4,&taskReceive2_Handle);
+	xReturn = xTaskCreate(taskReceive2,"taskReceive2",126,NULL,2,&taskReceive2_Handle);
 	if(pdPASS == xReturn)
 	{
 		printf("taskReceive2_Handle创建成功\n\n");
@@ -80,23 +80,25 @@ void AppTaskCreate(void *parameter)
 ********************************************************************************************/
 void taskSend(void *parameter)
 {
+	uint8_t send_data1[] = "Send data";
 	while(1)
 	{
 		if(KEY_ON == KEY_Scan(KEY1_GPIO_PORT,KEY1_GPIO_PIN))
 		{
 			LED1_Toggle();
 			//发送任务通知给接收任务1
-			xTaskNotifyGive(taskReceive1_Handle);
-			printf("向接收任务1发送通知成功\n");
+			xTaskNotify(taskReceive1_Handle,(uint32_t )&send_data1,eSetValueWithOverwrite);
+			printf("向接收任务1发送通知值成功\n");
 		}
 		
 		if(KEY_ON == KEY_Scan(KEY2_GPIO_PORT,KEY2_GPIO_PIN))
 		{
 			LED1_Toggle();
 			//发送任务通知给接收任务1
-			xTaskNotifyGive(taskReceive2_Handle);
-			printf("向接收任务2发送通知成功\n");
+			xTaskNotify(taskReceive2_Handle,2,eSetValueWithOverwrite);
+			printf("向接收任务2发送通知值成功\n");
 		}
+		vTaskDelay(20);
 	}
 }
 
@@ -108,10 +110,13 @@ void taskSend(void *parameter)
 ********************************************************************************************/
 void taskReceive1(void *parameter)
 {
+	uint32_t data =0;
+	char *r_char; 
 	while(1)
 	{
-		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
-		printf("taskReceive1接收到任务通知\n");
+		xTaskNotifyWait(0x00,0xFF,(uint32_t *)&r_char,portMAX_DELAY);
+		printf("taskReceive1接收到任务通知,通知值为%s\n\n",r_char);
+		vTaskDelay(20);
 	}
 }
 
@@ -123,10 +128,12 @@ void taskReceive1(void *parameter)
 ********************************************************************************************/
 void taskReceive2(void *parameter)
 {
+	uint32_t data =0;
 	while(1)
 	{
-		ulTaskNotifyTake(pdTRUE,portMAX_DELAY);
-		printf("taskReceive2接收到任务通知\n");
+		xTaskNotifyWait(0x00,0xFF,&data,portMAX_DELAY);
+		printf("taskReceive2接收到任务通知,通知值为%d\n\n",data);
+		vTaskDelay(20);
 	}
 }
 
